@@ -3,6 +3,12 @@ package test.myapplication.app;
 import android.app.Application;
 import android.widget.Toast;
 
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
+import test.myapplication.http.HttpClient;
+import test.myapplication.http.interceoter.RequestInterceptor;
+import test.myapplication.http.interfaces.GlobalHttpHandler;
 import timber.log.Timber;
 
 /**
@@ -20,6 +26,25 @@ public class EasyApplication extends Application {
         mEasyApplication = this;
     }
 
+
+    public void initHtpp() {
+        HttpClient.getInstance().getBuilder()
+                .addInterceptor(new RequestInterceptor(new GlobalHttpHandler() {
+                    @Override
+                    public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
+
+                        return response;
+                    }
+
+                    @Override
+                    public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
+                        return request;
+                    }
+                }, RequestInterceptor.Level.ALL))
+                .build();
+    }
+
+
     private static Toast mToast;
 
     /**
@@ -36,8 +61,9 @@ public class EasyApplication extends Application {
         mToast.show();
     }
 
-    private void initTimber(){
 
+    //
+    private void initTimber() {
         if (test.myapplication.BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         } else {

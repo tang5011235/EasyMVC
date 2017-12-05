@@ -9,17 +9,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
 import test.myapplication.http.BaseObserver;
 import test.myapplication.http.Bean.FuLiBean;
 import test.myapplication.http.Bean.GankBaseResponse;
-import test.myapplication.http.HttpClient;
 import test.myapplication.http.RetrofitClient;
-import test.myapplication.http.interceoter.RequestInterceptor;
 import test.myapplication.http.interfaces.ApiService;
-import test.myapplication.http.interfaces.GlobalHttpHandler;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -73,20 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }*/
-        HttpClient.getInstance().getBuilder()
-                .addInterceptor(new RequestInterceptor(new GlobalHttpHandler() {
-                    @Override
-                    public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
 
-                        return response;
-                    }
-
-                    @Override
-                    public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
-                        return request;
-                    }
-                }, RequestInterceptor.Level.ALL))
-                .build();
         RetrofitClient.getInstance().create("http://gank.io/api/", ApiService.class)
                 .getFuLi()
                 .subscribeOn(Schedulers.io())
