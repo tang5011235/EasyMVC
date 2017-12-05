@@ -69,6 +69,9 @@ dependencies {
     debugCompile rootProject.ext.dependencies["canary-debug"]
     releaseCompile rootProject.ext.dependencies["canary-release"]
     testCompile rootProject.ext.dependencies["canary-release"]
+    compile rootProject.ext.dependencies["timber"]
+    compile rootProject.ext.dependencies["dagger2"]
+    compile rootProject.ext.dependencies["dagger2-compiler"]
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 
@@ -84,6 +87,6 @@ dependencies {
     compile rootProject.ext.dependencies["retrofit"]
     compile rootProject.ext.dependencies["retrofit-converter-gson"]
     compile rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
-    compile rootProject.ext.dependencies["rxcache"]
-    compile rootProject.ext.dependencies["rxcache-jolyglot-gson"]
+    /*compile rootProject.ext.dependencies["rxcache"]
+    compile rootProject.ext.dependencies["rxcache-jolyglot-gson"]*/
 }

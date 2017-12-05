@@ -1,4 +1,4 @@
-package test.myapplication.http;
+package test.myapplication.http.interfaces;
 
 import io.reactivex.disposables.Disposable;
 import test.myapplication.http.Bean.BaseResponse;

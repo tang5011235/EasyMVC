@@ -1,4 +1,4 @@
-package test.myapplication.http;
+package test.myapplication.http.rxjava;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -25,7 +25,6 @@ public class Transformer {
             public ObservableSource<T> apply(@NonNull Observable<T> upstream) {
                 return upstream
                         .subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {

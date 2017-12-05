@@ -3,18 +3,23 @@ package test.myapplication;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import test.myapplication.http.BaseObserver;
+import test.myapplication.http.Bean.FuLiBean;
+import test.myapplication.http.Bean.GankBaseResponse;
+import test.myapplication.http.HttpClient;
+import test.myapplication.http.RetrofitClient;
+import test.myapplication.http.interceoter.RequestInterceptor;
+import test.myapplication.http.interfaces.ApiService;
+import test.myapplication.http.interfaces.GlobalHttpHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,37 +28,74 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder()
+        /*OkHttpClient.Builder okBuilder = new OkHttpClient.Builder()
+                .addInterceptor()
+                .addNetworkInterceptor()
+                .connectTimeout()
+                .writeTimeout()
+                .readTimeout()
+                .retryOnConnectionFailure();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("123")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("123123")
-                .build();
+                .client(okBuilder.build());
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("123")
-                .build();
-        client.newCall(request)
-                .enqueue(new Callback() {
+        builder.build().create(ApiService.class)
+                .getFuLi()
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
+                    public void accept(Disposable disposable) throws Exception {
+                        //执行相关的ui操作
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BaseResponse<String>>() {
+                    @Override
+                    public void accept(BaseResponse<String> stringBaseResponse) throws Exception {
 
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });*/
+
+        HttpClient.getInstance().getBuilder()
+                .addInterceptor(new RequestInterceptor(new GlobalHttpHandler() {
+                    @Override
+                    public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
+                        return response;
                     }
 
                     @Override
-                    public void onResponse(Call call, Response response) throws IOException {
+                    public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
+                        return request;
+                    }
+                }, RequestInterceptor.Level.ALL))
+                .build();
+        RetrofitClient.getInstance().create("http://gank.io/api/", ApiService.class)
+                .getFuLi()
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
 
+                    }
+                }).subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<GankBaseResponse<List<FuLiBean>>>() {
+                    @Override
+                    protected void doOnNext(GankBaseResponse<List<FuLiBean>> gankBaseResponse) {
+                        if (gankBaseResponse.isOk()) {
+                            for (FuLiBean fuLiBean : gankBaseResponse.getResults()) {
+                                System.out.println(fuLiBean);
+                            }
+                        }
                     }
                 });
-
-        try {
-            client.newCall(request)
-                    .execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Deque deque = new ArrayDeque();
-
     }
 }

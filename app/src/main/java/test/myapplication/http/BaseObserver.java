@@ -9,27 +9,33 @@ import java.net.UnknownHostException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import test.myapplication.app.EasyApplication;
 import test.myapplication.http.Bean.BaseResponse;
+import test.myapplication.http.exception.ApiException;
+import test.myapplication.http.exception.ExceptionFactory;
 
-public abstract class BaseObserver<T extends BaseResponse> implements Observer<T>, ISubscriber<T> {
+import static test.myapplication.app.EasyApplication.showToast;
+
+public abstract class BaseObserver<T extends BaseResponse> implements Observer<T> {
 
     private Toast mToast;
 
-    protected void doOnNetError() {
-    }
-
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        doOnSubscribe(d);
     }
 
     @Override
     public void onNext(@NonNull T t) {
         //这部分因为不同的后台处理逻辑不一样就没直接处理
         //使用者可以根据自己的需求进行定制即可
-        doOnNext(t);
+        if (t.isOk()) {
+            doOnNext(t);
+        }else {
+            //自行处理常见异常  异常分为两类，一类是可以自行处理，另一类不做处理。
+            ExceptionFactory.thorwException(t.getCode());
+        }
     }
+
+    protected abstract void doOnNext(T t);
 
     @Override
     public void onError(@NonNull Throwable e) {
@@ -40,39 +46,19 @@ public abstract class BaseObserver<T extends BaseResponse> implements Observer<T
         } else if (e instanceof UnknownHostException) {
             setError(ApiException.errorMsg_UnknownHostException);
         } else {
-
             String error = e.getMessage();
             showToast(error);
-            doOnError(error);
         }
     }
 
 
+
     @Override
     public void onComplete() {
-        doOnCompleted();
     }
 
 
     private void setError(String errorMsg) {
         showToast(errorMsg);
-        doOnError(errorMsg);
-        doOnNetError();
     }
-
-
-    /**
-     * Toast提示
-     *
-     * @param msg 提示内容
-     */
-    protected void showToast(String msg) {
-        if (mToast == null) {
-            mToast = Toast.makeText(EasyApplication.mEasyApplication, msg, Toast.LENGTH_SHORT);
-        } else {
-            mToast.setText(msg);
-        }
-        mToast.show();
-    }
-
 }

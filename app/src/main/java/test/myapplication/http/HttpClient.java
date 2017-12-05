@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient;
 public class HttpClient {
     private static HttpClient instance = null;
     private OkHttpClient.Builder mBuilder = null;
-    public HttpClient() {
+    private HttpClient() {
         mBuilder = new OkHttpClient.Builder();
     }
 

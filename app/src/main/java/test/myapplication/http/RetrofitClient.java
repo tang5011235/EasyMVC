@@ -14,7 +14,7 @@ public class RetrofitClient {
     private OkHttpClient.Builder mOkHttpBuilder = null;
     private Retrofit.Builder mRetrofitBuilder = null;
 
-    public RetrofitClient() {
+    private RetrofitClient() {
         mOkHttpBuilder = HttpClient.getInstance().getBuilder();
         mRetrofitBuilder = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -39,4 +39,9 @@ public class RetrofitClient {
         return mRetrofitBuilder.build();
     }
 
+    public <T> T create(String baseUrl, Class<T> aClass) {
+        return mRetrofitBuilder.baseUrl(baseUrl)
+                .build()
+                .create(aClass);
+    }
 }
