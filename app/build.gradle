@@ -24,7 +24,9 @@ android {
             }
         }
     }
-
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
 
     buildTypes {
         debug {
@@ -71,7 +73,8 @@ dependencies {
     testCompile rootProject.ext.dependencies["canary-release"]
     compile rootProject.ext.dependencies["timber"]
     compile rootProject.ext.dependencies["dagger2"]
-    compile rootProject.ext.dependencies["dagger2-compiler"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 

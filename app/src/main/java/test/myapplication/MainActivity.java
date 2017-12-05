@@ -22,7 +22,7 @@ import test.myapplication.http.interfaces.ApiService;
 import test.myapplication.http.interfaces.GlobalHttpHandler;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +63,21 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });*/
-
+       /* if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new Timber.Tree() {
+                @Override
+                protected void log(int priority, String tag, String message, Throwable t) {
+                    Timber.d(tag, message);
+                }
+            });
+        }*/
         HttpClient.getInstance().getBuilder()
                 .addInterceptor(new RequestInterceptor(new GlobalHttpHandler() {
                     @Override
                     public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
+
                         return response;
                     }
 

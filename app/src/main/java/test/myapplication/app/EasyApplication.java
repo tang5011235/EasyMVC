@@ -3,6 +3,8 @@ package test.myapplication.app;
 import android.app.Application;
 import android.widget.Toast;
 
+import timber.log.Timber;
+
 /**
  * Created by Administrator on 2017/11/27.
  */
@@ -12,12 +14,10 @@ public class EasyApplication extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
-        mEasyApplication = this;
-    }
 
-    public static EasyApplication getApp() {
-        return mEasyApplication;
+        super.onCreate();
+        initTimber();
+        mEasyApplication = this;
     }
 
     private static Toast mToast;
@@ -34,5 +34,19 @@ public class EasyApplication extends Application {
             mToast.setText(msg);
         }
         mToast.show();
+    }
+
+    private void initTimber(){
+
+        if (test.myapplication.BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new Timber.Tree() {
+                @Override
+                protected void log(int priority, String tag, String message, Throwable t) {
+                    Timber.d(tag, message);
+                }
+            });
+        }
     }
 }
