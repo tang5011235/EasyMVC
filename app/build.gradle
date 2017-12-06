@@ -77,6 +77,7 @@ dependencies {
 
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+    compile rootProject.ext.dependencies["butterknife"]
 
     //rxjava
     compile rootProject.ext.dependencies["rxjava2"]

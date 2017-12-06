@@ -68,6 +68,7 @@ public class EasyApplication extends Application implements GlobalHttpHandler {
         }
     }
 
+
     /**
      * Okttp网络响应 过滤
      * @param httpResult
@@ -91,5 +92,11 @@ public class EasyApplication extends Application implements GlobalHttpHandler {
     public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
         //可以执行一些网络请求操作，比如请求前添加coockie
         return request;
+    }
+
+
+    @Override
+    public void registerActivityLifecycleCallbacks(ActivityLifecycleCallbacks callback) {
+        super.registerActivityLifecycleCallbacks(callback);
     }
 }

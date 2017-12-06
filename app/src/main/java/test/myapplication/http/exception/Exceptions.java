@@ -29,11 +29,13 @@ public class Exceptions {
     }
 
     private void initBlackException() {
+
         addBlackException(500, "服务器繁忙");
         addBlackException(0, "服务器繁忙");
     }
 
     private void initWhiteExcetption() {
+
         addWhiteException(202, "123");
     }
 
