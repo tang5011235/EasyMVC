@@ -15,32 +15,24 @@ import timber.log.Timber;
  * Created by Administrator on 2017/11/27.
  */
 
-public class EasyApplication extends Application {
+public class EasyApplication extends Application implements GlobalHttpHandler {
     public static EasyApplication mEasyApplication;
 
     @Override
     public void onCreate() {
-
         super.onCreate();
-        initTimber();
         mEasyApplication = this;
+        initTimber();
+        initHtpp();
     }
 
-
+    /**
+     * 初始化Okttp网络配置
+     *
+     */
     public void initHtpp() {
         HttpClient.getInstance().getBuilder()
-                .addInterceptor(new RequestInterceptor(new GlobalHttpHandler() {
-                    @Override
-                    public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
-
-                        return response;
-                    }
-
-                    @Override
-                    public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
-                        return request;
-                    }
-                }, RequestInterceptor.Level.ALL))
+                .addInterceptor(new RequestInterceptor(this, RequestInterceptor.Level.ALL))
                 .build();
     }
 
@@ -62,7 +54,7 @@ public class EasyApplication extends Application {
     }
 
 
-    //
+    //初始化日志打印Timber
     private void initTimber() {
         if (test.myapplication.BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -74,5 +66,30 @@ public class EasyApplication extends Application {
                 }
             });
         }
+    }
+
+    /**
+     * Okttp网络响应 过滤
+     * @param httpResult
+     * @param chain
+     * @param response
+     * @return
+     */
+    @Override
+    public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
+        //可以执行一些网络请求操作，比如cookie的存储
+        return response;
+    }
+
+    /**
+     * okttp网络请求过滤
+     * @param chain
+     * @param request
+     * @return
+     */
+    @Override
+    public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
+        //可以执行一些网络请求操作，比如请求前添加coockie
+        return request;
     }
 }
