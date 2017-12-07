@@ -60,13 +60,12 @@ buildscript {
 
 //项目需要依赖的插件
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
-
     //test
     debugCompile rootProject.ext.dependencies["canary-debug"]
     releaseCompile rootProject.ext.dependencies["canary-release"]
@@ -74,11 +73,9 @@ dependencies {
     compile rootProject.ext.dependencies["timber"]
     compile rootProject.ext.dependencies["dagger2"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     compile rootProject.ext.dependencies["butterknife"]
-
     //rxjava
     compile rootProject.ext.dependencies["rxjava2"]
     compile rootProject.ext.dependencies["rxandroid2"]
@@ -86,11 +83,11 @@ dependencies {
     compile rootProject.ext.dependencies["rxlifecycle2-components"]
     compile rootProject.ext.dependencies["rxpermissions2"]
     compile rootProject.ext.dependencies["rxerrorhandler2"]
-
     //retrofit
     compile rootProject.ext.dependencies["retrofit"]
     compile rootProject.ext.dependencies["retrofit-converter-gson"]
     compile rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
     /*compile rootProject.ext.dependencies["rxcache"]
-    compile rootProject.ext.dependencies["rxcache-jolyglot-gson"]*/
+        compile rootProject.ext.dependencies["rxcache-jolyglot-gson"]*/
+    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
 }

@@ -10,12 +10,15 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import test.myapplication.ui.activity.interfaces.IViewProcess;
+import timber.log.Timber;
 
 /**
  * Created by Administrator on 2017/12/6.
  */
 
 public class RxProcess {
+
+
     public static <T> ObservableTransformer<T, T> CommonProcess(IViewProcess iViewProcess) {
         return new ObservableTransformer<T, T>() {
             @Override
@@ -25,6 +28,7 @@ public class RxProcess {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
+                                Timber.d("显示progress");
                                 iViewProcess.showProgress();
                             }
                         }).subscribeOn(AndroidSchedulers.mainThread())
@@ -32,6 +36,7 @@ public class RxProcess {
                         .doFinally(new Action() {
                             @Override
                             public void run() throws Exception {
+                                Timber.d("隐藏progress");
                                 iViewProcess.hideProgress();
                             }
                         });

@@ -24,6 +24,7 @@ public class EasyApplication extends Application implements GlobalHttpHandler {
         mEasyApplication = this;
         initTimber();
         initHtpp();
+        registerActivityLifecycleCallbacks(new ActivityLifecycleImp());
     }
 
     /**

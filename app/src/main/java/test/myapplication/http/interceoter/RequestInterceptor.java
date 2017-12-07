@@ -35,8 +35,8 @@ import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
 import test.myapplication.http.interfaces.GlobalHttpHandler;
-import test.myapplication.utils.CharacterHandler;
-import test.myapplication.utils.ZipHelper;
+import test.myapplication.http.utils.CharacterHandler;
+import test.myapplication.http.utils.ZipHelper;
 import timber.log.Timber;
 
 

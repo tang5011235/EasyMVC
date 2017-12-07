@@ -13,7 +13,7 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package test.myapplication.utils;
+package test.myapplication.http.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
