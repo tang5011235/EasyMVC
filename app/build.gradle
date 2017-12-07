@@ -76,6 +76,7 @@ dependencies {
     //view
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     compile rootProject.ext.dependencies["butterknife"]
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     //rxjava
     compile rootProject.ext.dependencies["rxjava2"]
     compile rootProject.ext.dependencies["rxandroid2"]
